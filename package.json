@@ -1,0 +1,22 @@
+{
+  "name": "meli-server",
+  "version": "1.0.0",
+  "description": "server Mercado libre",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon index.js",
+    "start": "node index.js"
+  },
+  "engines": {
+    "node": "12.18.4"
+  },
+  "author": "Franco Martin Colombo",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.17.1",
+    "node-fetch": "^3.0.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.14"
+  }
+}
