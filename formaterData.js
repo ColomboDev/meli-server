@@ -43,11 +43,13 @@ const formatItems = ({ available_filters, filters, results }) => {
     picture: formatPicture(result.thumbnail),
     condition: result.condition,
     free_shipping: result.shipping.free_shipping,
+    city: result.address.state_name,
   }));
   return { author, categories: categories(), items };
 };
 
-const formatItem = (product, description) => {
+const formatItem = (product, description, categories) => {
+  const paths = categories.path_from_root.map((path) => path.name);
   const item = {
     id: product.id,
     title: product.title,
@@ -56,7 +58,8 @@ const formatItem = (product, description) => {
     condition: product.condition,
     free_shipping: product.shipping.free_shipping,
     sold_quantity: product.sold_quantity,
-    description: description[0].plain_text,
+    description: description.plain_text,
+    categories: paths,
   };
 
   return { author, item };

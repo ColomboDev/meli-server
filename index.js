@@ -1,11 +1,13 @@
 const express = require("express");
 const app = express();
+const compression = require("compression");
 const port = process.env.PORT || 5000;
 const proxy = "https://api.mercadolibre.com";
 const { formatItem, formatItems } = require("./formaterData");
 const fetch = (...args) =>
   import("node-fetch").then(({ default: fetch }) => fetch(...args));
 
+app.use(compression());
 app.use(function (req, res, next) {
   var allowedOrigins = ["http://localhost:3000"];
   var origin = req.headers.origin;
@@ -48,13 +50,18 @@ app.get("/api/items/:id", async (req, res) => {
   try {
     const [productResponse, descriptionResponse] = await Promise.all([
       fetch(`${proxy}/items/${req.params.id}`),
-      fetch(`${proxy}/items/${req.params.id}/descriptions`),
+      fetch(`${proxy}/items/${req.params.id}/description`),
     ]);
 
     const productData = await productResponse.json();
     const descriptionData = await descriptionResponse.json();
 
-    const item = formatItem(productData, descriptionData);
+    const categoriesResponse = await fetch(
+      `${proxy}/categories/${productData.category_id}`
+    );
+    const categoriesData = await categoriesResponse.json();
+
+    const item = formatItem(productData, descriptionData, categoriesData);
     res.json(item);
   } catch {
     res.status(404).send("No se pudo obtener los datos de Mercado Libre");

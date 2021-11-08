@@ -13,6 +13,7 @@
   "author": "Franco Martin Colombo",
   "license": "MIT",
   "dependencies": {
+    "compression": "^1.7.4",
     "express": "^4.17.1",
     "node-fetch": "^3.0.0"
   },
